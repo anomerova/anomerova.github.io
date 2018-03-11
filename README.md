@@ -16,6 +16,6 @@
 <br>
 Полезные ссылки: 
 <br>
-Гитхаб: [Ссылка](https://github.com/annie-kelyas/annie-kelyas.github.io)
+[Гитхаб](https://github.com/annie-kelyas/annie-kelyas.github.io)
 <br>
-Личная страница: [Ссылка](https://annie-kelyas.github.io)
+[Личная страница](https://annie-kelyas.github.io)
