@@ -1,0 +1,131 @@
+<html>
+	<title>Отрисовочный полигон</title>
+	<head></head>
+	<script type="text/javascript">
+		
+		var lines;
+		var drawFlag = false;
+
+		//Раскрывающийся список
+		var ch_disp = function( id )
+			{
+				var el = document.getElementById( id );
+				el.style.display = ( el.style.display == 'block' )? 'none' : 'block';
+			}
+		
+		//Функция проверки
+		var check = function unit_test()//endPoint, startPoint, len)
+		{
+			if(drawFlag == true)
+			{
+			  if (endPoint[0] - startPoint[0] == Number(mydata.lenght)) 
+				{
+				  console.log("YEP");
+				  alert("Тест пройден");
+				}
+				else 
+				{
+				  console.log("NOPE");
+				  alert("Тест не пройден");
+				}
+			}
+			else
+			{
+				alert("Упс, кажется, нечего проверять. Пожалуйста, сначала нажмите кнопку 'Нарисовать'");
+			}
+		}
+
+		//Функция считывания файла
+		var load = function loadFile() 
+		{
+		    var input,fr;
+
+		    input = document.getElementById('fileinput');
+		    if (!input) {
+		        alert("Упс, не удалось найти элемент fileinput.");
+		    }
+		    else if (!input.files) {
+		        alert("Этот браузер, похоже, не поддерживает свойство `files` входных файлов.");
+		    }
+		    else if (!input.files[0]) {
+		        alert("Пожалуйста, выберите файл нажатием на кнопку 'Загрузить файл'");
+		    }
+		    else {
+		        myfile = input.files[0];
+		        fr = new FileReader();
+      			fr.onload = receivedText;
+      			fr.readAsText(myfile);
+				alert("Файл успешно загружен");
+		    }
+
+		    function receivedText(e) {
+      			lines = e.target.result;
+    		}
+		}
+
+		//Функция рисования
+		var drawing = function draw() {
+			if(lines == null)
+			{
+				alert("Упс, кажется, у нас нет данных для отрисовки стрелки. Пожалуйста, выберите файл нажатием на кнопку 'Загрузить файл'");
+			}
+			else
+			{
+				var canvas = document.getElementById('canvas');
+				if (canvas.getContext)
+				{
+					var ctx = canvas.getContext('2d');
+					mydata = JSON.parse(lines);
+					var len = Number(mydata.height);
+					//высчитываем точку конца стрелки
+					startPoint = [Number(mydata.x),Number(mydata.y)];
+					endPoint = [Number(mydata.x) + Number(mydata.lenght), Number(mydata.y)];
+					highestPoint = [endPoint[0] - len, endPoint[1] + len];
+					lowestPoint = [endPoint[0] - len, endPoint[1] - len];
+					// строим линию стрелки
+					ctx.beginPath();
+					ctx.moveTo(startPoint[0],startPoint[1]);
+					ctx.lineTo(endPoint[0],endPoint[1]);
+					//строим верхнюю часть стрелки
+					ctx.lineTo(highestPoint[0],highestPoint[1]);
+					//строим нижнюю часть стрелки
+					ctx.moveTo(endPoint[0],endPoint[1]);
+					ctx.lineTo(lowestPoint[0],lowestPoint[1]);
+					ctx.closePath();
+					ctx.stroke();
+					drawFlag = true;
+					//return endPoint, startPoint, len;
+				}
+			}	
+		}
+	</script>
+	<body>
+			<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
+				<fieldset>
+				    <h2>Выбор файла json</h2>
+					<DIV CLASS="ptr" ONCLICK="ch_disp('A1')" STYLE="margin-bottom: 5px; font-weight: normal; color: blue">Структура json-файла ▼</DIV>
+					<DIV ID="A1" STYLE="margin: 0 0 10px 10px; display:none">
+					<ul>
+					<li>Координата начала стрелки по оси X</li>
+					<li>Координата начала стрелки по оси Y</li>
+					<li>Длина стрелки</li>
+					<li>Высота и ширина линий стрелки, идущих от конечной точки</li>
+					</ul>
+					Пример: {"x" : "25", "y" : "25", "lenght" : "50", "height" : "10"}
+					</DIV>
+					<br>
+				    <input type="file" id="fileinput" accept=".json">
+				    <input type="button" id="btnLoad" value="Загрузить файл" onclick="load()"">
+				</fieldset>
+			</form>
+			<form id="drawCanvas" name="paintField">
+				<fieldset>
+					<h2>Отрисовочный полигон</h2>
+					<input type="button" onclick="drawing()" value="Нарисовать"/>
+					<input type="button" onclick="check()" value="Проверить"/>
+					<br>
+					<canvas id="canvas" width="200" height="200">
+				</fieldset>
+			</form>
+	</body>
+</html>
