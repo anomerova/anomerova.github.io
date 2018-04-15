@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
-	<title>Личная страница</title>
-	<script type="text/javascript">
+	<title></title>
+	<head>
+	<meta charset="utf-8">
+	</head>
+	<body onload="digitalWatch()">
+		<p style color=00ff00>Лабораторные работы по проектированию информационных систем. Автор: Номерова Анна</p>
+		<script type="text/javascript">
 			//Цифровые часы
 			function digitalWatch() {
 				var date = new Date();
@@ -22,8 +27,6 @@
 				}
 			}
 	</script>
-	<body onload="digitalWatch()">
-		<p style color=00ff00>Лабораторные работы по проектированию информационных систем. Автор: Номерова Анна</p>
 		<DIV CLASS="ptr" ONCLICK="ch_disp('A1')" STYLE="margin-bottom: 5px; font-weight: normal; color: blue">Ссылки ▼</DIV>
 		<DIV ID="A1" STYLE="margin: 0 0 10px 10px; display:none">
 			<ul>
@@ -32,7 +35,7 @@
 			</ul>
 		</DIV>
 		<br>
-		<DIV CLASS="ptr" ONCLICK="ch_disp('A1')" STYLE="margin-bottom: 5px; font-weight: normal; color: blue">Часы ▼</DIV>
+		<DIV CLASS="ptr" ONCLICK="ch_disp('A2')" STYLE="margin-bottom: 5px; font-weight: normal; color: blue">Часы ▼</DIV>
 		<DIV ID="A1" STYLE="margin: 0 0 10px 10px; display:none">
 			<p id="digital_watch" style="color: #f00; font-size: 120%; font-weight: bold;"></p>
 		</DIV>
