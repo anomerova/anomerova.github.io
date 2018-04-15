@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
-	<title></title>
-	<body onload="digitalWatch()">
-		<p style color=00ff00>Лабораторные работы по проектированию информационных систем. Автор: Номерова Анна</p>
-		<script type="text/javascript">
+	<title>Личная страница</title>
+	<script type="text/javascript">
+			//Цифровые часы
 			function digitalWatch() {
 				var date = new Date();
 				var hours = date.getHours();
@@ -14,14 +13,28 @@
 				if (seconds < 10) seconds = "0" + seconds;
 				document.getElementById("digital_watch").innerHTML = hours + ":" + minutes + ":" + seconds;
 				setTimeout("digitalWatch()", 1000);
+				
+			//Раскрывающийся список
+			var ch_disp = function( id )
+				{
+					var el = document.getElementById( id );
+					el.style.display = ( el.style.display == 'block' )? 'none' : 'block';
+				}
 			}
-</script>
+	</script>
+	<body onload="digitalWatch()">
+		<p style color=00ff00>Лабораторные работы по проектированию информационных систем. Автор: Номерова Анна</p>
+		<DIV CLASS="ptr" ONCLICK="ch_disp('A1')" STYLE="margin-bottom: 5px; font-weight: normal; color: blue">Ссылки ▼</DIV>
+		<DIV ID="A1" STYLE="margin: 0 0 10px 10px; display:none">
+			<ul>
+				<li><a style="color:#0000FF"; href="https://github.com/annie-kelyas/annie-kelyas.github.io">Ссылка на личный репозиторий</a></li>
+				<li><a style="color:#0000FF"; href="js.html">Отрисовочный полигон для стрелки</a></li>
+			</ul>
+		</DIV>
 		<br>
-		<p id="digital_watch" style="color: #f00; font-size: 120%; font-weight: bold;"></p>
-		<br>
-		<a style="color:#0000FF"; href="https://annie-kelyas.github.io">Ссылка на Github страницу</a>
-		<br>
-		<a style="color:#0000FF"; href="https://github.com/annie-kelyas/annie-kelyas.github.io">Ссылка на личный репозиторий</a>
-		  
+		<DIV CLASS="ptr" ONCLICK="ch_disp('A1')" STYLE="margin-bottom: 5px; font-weight: normal; color: blue">Часы ▼</DIV>
+		<DIV ID="A1" STYLE="margin: 0 0 10px 10px; display:none">
+			<p id="digital_watch" style="color: #f00; font-size: 120%; font-weight: bold;"></p>
+		</DIV>
 	</body>
 </html>
