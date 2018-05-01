@@ -1,0 +1,206 @@
+<html>
+	<head></head>
+		<script type="text/javascript">
+			var block_arr_json;
+			var exec_role_arr_json;
+			var lines;
+		//Функция считывания файла
+		var load = function loadFile(fileinput){ //файл, полученный из html-кнопки
+			var input,fr;
+
+			input = document.getElementById(fileinput); 
+			if (!input) {
+				alert("Упс, не удалось найти элемент fileinput.");
+			}
+			else if (!input.files) {
+				alert("Этот браузер, похоже, не поддерживает свойство `files` входных файлов.");
+			}
+			else if (!input.files[0]) {
+				alert("Пожалуйста, выберите файл нажатием на кнопку 'Загрузить файл'");
+			}
+			else {
+				myfile = input.files[0];
+				fr = new FileReader();
+				fr.onload = receivedText;
+				fr.readAsText(myfile);
+				
+				alert("Файл успешно загружен");
+			}
+
+			function receivedText(e) {
+				if (fileinput == 'input_block')
+				{
+					block_arr_json = e.target.result;
+				}
+				else 
+				{
+					exec_role_arr_json = e.target.result;
+				}
+			}
+		}
+
+		//Функция распаковки json
+		var unarchive = function unarchive(result) {
+			if(result == null)
+			{
+				alert("Упс, кажется, у нас нет данных. Пожалуйста, выберите файл нажатием на кнопку 'Загрузить файл'");
+			}
+			else
+			{			
+					mydata = JSON.parse(result);
+					return mydata;
+			}
+		}	
+
+		//функция создания массива заявок
+		var generate = function generate(num_col) {
+		    var arr = [];
+			var number = 1;
+		    for (var i = 0; i < num_col; i++) {
+		        var row = {
+		        	id: 'id_' + number,
+		        	time_start: "",
+		        	flag_start: "Y",
+		        	time_last_upd: "",
+		        	time_finish: "",
+		        	flag_finish: "N",
+		        	cost: ""
+		        	};
+		        arr[i] = row;
+		        number++;
+		    }
+			return arr;
+		}
+		 
+		//функция обработки блоков  Основная функция
+		var block_recursion = function block_recursion() {
+			var cost_finally = 0;
+			var block_arr = unarchive(block_arr_json); //набор блоков с количеством исполнителей
+			var exec_role_arr = unarchive(exec_role_arr_json); //исполнители с ролью и стоимостью
+			var num_col = document.getElementById('num_col').value; //получение количества заявок
+			var request_arr = generate(num_col); //генерация массива заявок			
+			//обработка полученного из json массива блоков и создание блочного массива
+			for (var i = 0; i < block_arr.length; i++) //цикл вызова функции обработки блока
+			{
+				var time_exec = Number(block_arr[i].time_exec);  //время обработки заявки в блоке
+				var exec_number = Number(block_arr[i].exec_num); // количество исполнителей
+				var name_role = block_arr[i].name_role; //получаем роль
+				for(var z = 0; z < exec_role_arr.length; z++)
+				{
+					if (exec_role_arr[z].name_role == name_role)
+					{
+						var cost_hour = exec_role_arr[z].cost_hour; //находим роль в массиве ролей и получаем стоимость часа работы
+					}
+				}
+				if (i + 1 == block_arr.length) //проставляем флаг финиша
+				{
+					for (var i = 0; i < request_arr.length; i++) //цикл вызова функции обработки блока
+					{
+						request_arr[i].flag_finish = 'Y';
+					}
+				}
+				//вызываем функцию обработки блока, чтобы получить затраты при обработке блока
+				var request_arr = block_work(request_arr, exec_number, cost_hour, time_exec); 
+			}
+			for (var c = 0; c < request_arr.length; c++) //считаем общие затраты на обработку
+				{
+					cost_finally = cost_finally + request_arr[c].cost;
+				}
+			document.getElementById('cost_finally').value = cost_finally;
+
+			console.log(request_arr);
+			console.log(cost_finally);
+		}
+
+		//функция создания массива исполнителей 
+		var exec_arr_create = function exec_arr_create (exec_number) {  
+			var number = 1;
+			var exec_arr = [];
+		    for (var i = 0; i < exec_number; i++) {
+		        var row = {
+		        	id: 'executor_' + number,
+		        	flag_work: "N", //при создании все исполнители по умолчанию (читай, по логике) свободны
+		        }
+		        number++;
+		        exec_arr[i] = row;
+			}
+			return exec_arr;		
+		}
+
+		//функция обработки блока
+		var block_work = function block_work (request_arr, exec_number, cost_hour, time_exec) {
+			var exec_arr = exec_arr_create (exec_number) //создаем массив возможных исполнителей
+			var delay = 0;
+			for (var i = 0; i < request_arr.length; i++) //цикл вызова функции обработки блока
+			{
+				var array_save = exec_work (exec_number, exec_arr); //вызываем функцию для поиска свободного исполнителя (возвращаются флаг и массив)
+				var exec_busy_flag = array_save[0];
+				exec_arr = array_save[1];
+				if (exec_busy_flag == 'Y') //проверка флага
+					{
+						delay = delay + Number(time_exec);
+					}
+				if (request_arr[i].flag_start == 'N' && request_arr[i].flag_finish == 'N')
+				{
+					request_arr[i].time_last_upd = request_arr[i].time_last_upd + Number(time_exec) + delay;
+					request_arr[i].cost = request_arr[i].cost + (Number(cost_hour) * (Number(time_exec)/60));
+				}
+				if (request_arr[i].flag_start == 'Y')
+				{
+					request_arr[i].time_start = delay;
+					request_arr[i].time_last_upd = Number(time_exec) + delay;
+					request_arr[i].flag_start = 'N';
+					request_arr[i].cost = Number(cost_hour) * (Number(time_exec)/60);
+				}
+				if (request_arr[i].flag_finish == 'Y')
+				{
+					request_arr[i].time_last_upd = request_arr[i].time_last_upd + Number(time_exec) + delay;
+					request_arr[i].time_finish = request_arr[i].time_last_upd;
+					request_arr[i].cost = request_arr[i].cost + (Number(cost_hour) * (Number(time_exec)/60));
+				}
+			}
+			return request_arr;
+		}
+
+		//функция обработки массива исполнителей 
+		var exec_work = function exec_work (exec_number, exec_arr) { 
+			var exec_busy_flag = 'Y';
+			select_exec('N');
+			if (exec_busy_flag == 'Y')
+			{
+				for (var i = 0; i < exec_number; i++) //если все исполнители заняты, передвать флаг и обнулять занятость
+				{ 
+					exec_arr[i].flag_work  = 'N';
+				}
+				select_exec('Y');
+			}	
+			return [exec_busy_flag, exec_arr]; 
+
+			function select_exec(y_flag){
+				for (var i = 0; i < exec_number; i++) //бегаем по массиву в поиках свободного исполнителя 
+				{ 
+					if (exec_arr[i].flag_work == 'N')
+					{
+						exec_arr[i].flag_work = 'Y';
+						if (y_flag == 'N')
+						{
+							exec_busy_flag = 'N';
+						}
+						return;
+					}
+				}
+			}
+		}
+	</script>
+	<body>
+			<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
+				<fieldset>
+				    <p text-color="gray">Выбор файла json, который содержит количество блоков <input type="file" id="input_block" accept=".json" onchange="load('input_block')"> </p>
+				    <p text-color="gray">Выбор файла json, который содержит количество роли <input type="file" id="input_exec" accept=".json" onchange="load('input_exec')"></p>
+   					<p><input type="number" maxlength="25" size="40" placeholder="Введите количество обрабатываемых заявок" id="num_col" pattern="^[0-9]+$"></p>
+				    <input type="button" id="btnLoad" value="Запуск имитации" onclick="block_recursion()">
+				    <p>Полные издержки на обработку заявок <output name="result" id="cost_finally">0</output></p>
+				</fieldset>
+			</form>
+	</body>
+</html>
