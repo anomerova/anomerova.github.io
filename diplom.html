@@ -193,10 +193,10 @@
 			<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
 				<fieldset>
 				    <p text-color="gray">Выбор файла json, который содержит количество блоков <input type="file" id="input_block" accept=".json" onchange="load('input_block')"> </p>
-				    <p text-color="gray">Выбор файла json, который содержит количество роли <input type="file" id="input_exec" accept=".json" onchange="load('input_exec')"></p>
+				    <p text-color="gray">Выбор файла json, который содержит роли <input type="file" id="input_exec" accept=".json" onchange="load('input_exec')"></p>
    					<p><input type="number" maxlength="25" size="40" placeholder="Введите количество обрабатываемых заявок" id="num_col" pattern="^[0-9]+$"></p>
 				    <input type="button" id="btnLoad" value="Запуск имитации" onclick="block_recursion()">
-				    <p>Полные издержки на обработку заявок <output name="result" id="cost_finally">0</output></p>
+				    <p>Полные издержки на обработку заявок: <output name="result" id="cost_finally">0</output></p>
 				</fieldset>
 			</form>
 	</body>
