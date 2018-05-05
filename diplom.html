@@ -1,5 +1,43 @@
+<!DOCTYPE html>
 <html>
-	<head></head>
+	<head>
+		<style type="text/css">
+			table { 
+				width:100%; /*Ширина таблицы*/
+				border-collapse:collapse; 
+				background-color:#7FFFD4;
+				border-width:2px;
+				border-style:solid;
+				border-color:#4682B4;
+				}
+			td { /*Скрипт относительно ячейки таблицы*/
+				border:1px solid black;
+				text-align: center;
+				border-color:#4682B4;
+			}
+			fieldset {
+				text-align: center;
+				border-color:#4682B4;
+				width:50%;
+				hight:200px;
+				font-family: Verdana, Arial, Helvetica, sans-serif; 
+				font-size: 11pt;
+			}
+			ul{
+				list-style-position: inside;
+			}
+			div{
+				margin: 5px; 
+				font-weight: normal;
+				color: #4682B4; 
+				display: none;
+			}
+			input{
+				font-family: Verdana, Arial, Helvetica, sans-serif; 
+				font-size: 11pt;
+			}
+		</style>
+	</head>
 		<script type="text/javascript">
 			var block_arr_json;
 			var exec_role_arr_json;
@@ -23,8 +61,6 @@
 				fr = new FileReader();
 				fr.onload = receivedText;
 				fr.readAsText(myfile);
-				
-				alert("Файл успешно загружен");
 			}
 
 			function receivedText(e) {
@@ -76,7 +112,11 @@
 		var block_recursion = function block_recursion() {
 			var cost_finally = 0;
 			var block_arr = unarchive(block_arr_json); //набор блоков с количеством исполнителей
+			print_array(block_arr, 'block');
+			document.getElementById("div-block").style.display = "block";
 			var exec_role_arr = unarchive(exec_role_arr_json); //исполнители с ролью и стоимостью
+			print_array(exec_role_arr, 'role');
+			document.getElementById("div-role").style.display = "block";
 			var num_col = document.getElementById('num_col').value; //получение количества заявок
 			var request_arr = generate(num_col); //генерация массива заявок			
 			//обработка полученного из json массива блоков и создание блочного массива
@@ -107,6 +147,8 @@
 					cost_finally = cost_finally + request_arr[c].cost;
 				}
 			document.getElementById('cost_finally').value = cost_finally.toFixed(2);
+			print_array(request_arr, 'cost');			
+			document.getElementById("div-cost").style.display = "block";
 		}
 
 		//функция создания массива исполнителей 
@@ -188,15 +230,80 @@
 				}
 			}
 		}
+		
+		//функция вывода массива в таблицу
+		function print_array (array, id){
+			var firstTable = document.getElementById(id).querySelector('tr');
+			var table = document.createDocumentFragment();
+			var tr = document.createElement('tr');
+			var inner_array = array[0];
+					for(var p in inner_array) { //создание ячейки tr
+						var td = document.createElement('td');
+						td.innerHTML = p;
+						tr.appendChild(td);
+					}
+			table.appendChild(tr);
+			for (var i = 0; i < array.length; i++) { //создание строки tr
+				var tr = document.createElement('tr');
+				var inner_array = array[i];
+				for(var p in inner_array) { //создание ячейки tr
+					var td = document.createElement('td');
+					td.innerHTML = inner_array[p];
+					tr.appendChild(td);
+				}
+				table.appendChild(tr);
+			}
+			while (document.getElementById(id).firstChild) 
+			{
+				document.getElementById(id).removeChild(document.getElementById(id).firstChild);
+			}
+			document.getElementById(id).appendChild(table);	
+		}
+
+		//функция списка
+		var ch_disp = function( id )
+			{
+				var el = document.getElementById( id );
+				el.style.display = ( el.style.display == 'block' )? 'none' : 'block';
+			}
 	</script>
 	<body>
 			<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
 				<fieldset>
-				    <p text-color="gray">Выбор файла json, который содержит количество блоков <input type="file" id="input_block" accept=".json" onchange="load('input_block')"> </p>
-				    <p text-color="gray">Выбор файла json, который содержит роли <input type="file" id="input_exec" accept=".json" onchange="load('input_exec')"></p>
-   					<p><input type="number" maxlength="25" size="40" placeholder="Введите количество обрабатываемых заявок" id="num_col" pattern="^[0-9]+$"></p>
+					<h2>Расчетный модуль</h2>
+					<DIV class="ptr" onclick="ch_disp('A1')" style="display: block;">Пример заполнения json-файла ▼</DIV>
+					<DIV id="A1">
+						<p>Структура файла блоков:
+						<ul>
+							<li>Время обработки в минутах</li>
+							<li>Количество исполнителей</li>
+							<li>Роль исполнителя</li>
+						</ul>
+						Пример: [{"time_exec":"5","exec_num":"2","name_role":"Исполнитель"},{"time_exec":"6","exec_num":"2","name_role":"Исполнитель"}]
+						<p>Структура файла ролей:
+						<ul>
+							<li>Название роли</li>
+							<li>Стоимость часа работы</li>
+						</ul>
+						Пример: [{"name_role":"Исполнитель","cost_hour":"300"},{"name_role":"Эксперт","cost_hour":"200"}]</p>
+					</DIV>
+				    <p text-color="gray">Выбор файла json, который содержит количество блоков <br><input type="file" id="input_block" accept=".json" onchange="load('input_block')"> </p>
+					<DIV class="ptr" onclick="ch_disp('A2')" id="div-block">Результат обработки файла блоков ▼</DIV>
+					<DIV id="A2">
+						<table id="block"></table>
+					</DIV>					
+				    <p text-color="gray">Выбор файла json, который содержит роли <br><input type="file" id="input_exec" accept=".json" onchange="load('input_exec')"></p>
+					<DIV class="ptr" onclick="ch_disp('A3')" id="div-role" >Результат обработки файла ролей ▼</DIV>
+					<DIV id="A3">
+						<table id="role"></table>
+					</DIV>
+   					<p><input type="number" name="num_col" maxlength="25" size="40" placeholder="Введите количество обрабатываемых заявок" id="num_col" pattern="^[0-9]+$" style="width: 55%"></p>
 				    <input type="button" id="btnLoad" value="Запуск имитации" onclick="block_recursion()">
 				    <p>Полные издержки на обработку заявок: <output name="result" id="cost_finally">0</output></p>
+					<DIV class="ptr" onclick="ch_disp('A4')" id="div-cost" >Результат обработки файла ролей ▼</DIV>
+					<DIV id="A4">
+						<table id="cost"></table>
+					</DIV>
 				</fieldset>
 			</form>
 	</body>
