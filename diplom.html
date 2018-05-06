@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+	<title>Расчетны модуль</title>
 	<head>
 		<style type="text/css">
 			table { 
@@ -45,7 +46,6 @@
 		//Функция считывания файла
 		var load = function loadFile(fileinput){ //файл, полученный из html-кнопки
 			var input,fr;
-
 			input = document.getElementById(fileinput); 
 			if (!input) {
 				alert("Упс, не удалось найти элемент fileinput.");
@@ -62,7 +62,6 @@
 				fr.onload = receivedText;
 				fr.readAsText(myfile);
 			}
-
 			function receivedText(e) {
 				if (fileinput == 'input_block')
 				{
@@ -74,7 +73,6 @@
 				}
 			}
 		}
-
 		//Функция распаковки json
 		var unarchive = function unarchive(result) {
 			if(result == null)
@@ -87,7 +85,6 @@
 					return mydata;
 			}
 		}	
-
 		//функция создания массива заявок
 		var generate = function generate(num_col) {
 		    var arr = [];
@@ -132,11 +129,12 @@
 						var cost_hour = exec_role_arr[z].cost_hour; //находим роль в массиве ролей и получаем стоимость часа работы
 					}
 				}
-				if (i + 1 == block_arr.length) //проставляем флаг финиша
+				var k = i;
+				if (k + 1 == block_arr.length) //проставляем флаг финиша
 				{
-					for (var i = 0; i < request_arr.length; i++) //цикл вызова функции обработки блока
+					for (var k = 0; k < request_arr.length; k++) //цикл вызова функции обработки блока
 					{
-						request_arr[i].flag_finish = 'Y';
+						request_arr[k].flag_finish = 'Y';
 					}
 				}
 				//вызываем функцию обработки блока, чтобы получить затраты при обработке блока
@@ -150,7 +148,6 @@
 			print_array(request_arr, 'cost');			
 			document.getElementById("div-cost").style.display = "block";
 		}
-
 		//функция создания массива исполнителей 
 		var exec_arr_create = function exec_arr_create (exec_number) {  
 			var number = 1;
@@ -165,7 +162,6 @@
 			}
 			return exec_arr;		
 		}
-
 		//функция обработки блока
 		var block_work = function block_work (request_arr, exec_number, cost_hour, time_exec) {
 			var exec_arr = exec_arr_create (exec_number) //создаем массив возможных исполнителей
@@ -200,7 +196,6 @@
 			}
 			return request_arr;
 		}
-
 		//функция обработки массива исполнителей 
 		var exec_work = function exec_work (exec_number, exec_arr) { 
 			var exec_busy_flag = 'Y';
@@ -214,7 +209,6 @@
 				select_exec('Y');
 			}	
 			return [exec_busy_flag, exec_arr]; 
-
 			function select_exec(y_flag){
 				for (var i = 0; i < exec_number; i++) //бегаем по массиву в поиках свободного исполнителя 
 				{ 
@@ -259,7 +253,6 @@
 			}
 			document.getElementById(id).appendChild(table);	
 		}
-
 		//функция списка
 		var ch_disp = function( id )
 			{
