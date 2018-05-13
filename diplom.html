@@ -325,7 +325,7 @@
 			{
 				var delay = exec_arr[indx].time_release - time;
 				var time_result = exec_arr[indx].time_release = time + time_exec + delay;
-				exec_arr[indx].all_time = exec_arr[indx].all_time + time_exec + delay;
+				exec_arr[indx].all_time = exec_arr[indx].all_time + time_exec;
 				return [exec_arr, time_result, indx];
 			}
 		}
