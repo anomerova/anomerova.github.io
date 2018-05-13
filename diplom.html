@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Расчетный модуль</title>
 		<style type="text/css">
 			table.result { 
 				width:100%; /*Ширина таблицы*/
@@ -411,16 +410,25 @@
 						<p>Структура файла блоков:
 						<ul>
 							<li>Время обработки в минутах</li>
-							<li>Количество исполнителей</li>
 							<li>Роль исполнителя</li>
 						</ul>
-						Пример: [{"time_exec":"5","exec_num":"2","name_role":"Исполнитель"},{"time_exec":"6","exec_num":"2","name_role":"Исполнитель"}]
-						<p>Структура файла ролей:
+						Пример: [{"time_exec":"2","name_role":"Оператор"},
+								{"time_exec":"15","name_role":"Контроллер"},
+								{"time_exec":"10","name_role":"Исполнитель"},
+								{"time_exec":"10","name_role":"Эксперт"},
+								{"time_exec":"20","name_role":"Исполнитель заключения"}]
+						<Структура файла ролей:
 						<ul>
 							<li>Название роли</li>
+							<li>Количество исполнителей</li>
 							<li>Стоимость часа работы</li>
+							<li>Стоимость простоя исполнителя</li>
 						</ul>
-						Пример: [{"name_role":"Исполнитель","cost_hour":"300"},{"name_role":"Эксперт","cost_hour":"200"}]</p>
+						Пример: [{"name_role":"Исполнитель","exec_num":"2", "cost_hour":"200", "downtime_cost":"200"},
+									{"name_role":"Эксперт","exec_num":"2", "cost_hour":"400", "downtime_cost":"200"},
+									{"name_role":"Оператор","exec_num":"2", "cost_hour":"100", "downtime_cost":"200"},
+									{"name_role":"Исполнитель заключения","exec_num":"2", "cost_hour":"300", "downtime_cost":"200"},
+									{"name_role":"Контроллер","exec_num":"2", "cost_hour":"100", "downtime_cost":"200"}]</p>
 					</DIV>
 					</br>
 				</div>
