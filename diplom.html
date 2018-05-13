@@ -181,7 +181,7 @@
 			request_full_journal.sort(compareStart);
 			print_array (request_full_journal, 'cost');	
 			print_array(block_arr, 'block');
-			print_array(block_arr, 'role');
+			print_array(exec_role_arr, 'role');
 			document.getElementById("fs2").style.display = "block";
 		}
 		//функция создания журнала исполнителей
@@ -195,8 +195,8 @@
 				время_работы: exec_arr[n].all_time,
 				время_простоя: full_time - exec_arr[n].all_time,
 				};
-		        exec_journal[n] = row;
-				n++;
+		                exec_journal[n] = row;
+				
 				var downtime_cost_full = downtime_cost_full + ((full_time - exec_arr[n].all_time) * Number(exec_arr[n].downtime_cost));
 			}
 			print_array(exec_journal, 'worker');
