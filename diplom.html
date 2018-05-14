@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>Расчетный модуль</title>
 		<style type="text/css">
 			table.result { 
 				width:100%; /*Ширина таблицы*/
@@ -143,6 +144,7 @@
 			var block_arr = unarchive(block_arr_json); //набор блоков с временем обработки
 			var exec_role_arr = unarchive(exec_role_arr_json); //исполнители с ролью, стоимостью и количеством
 			var num_col = document.getElementById('num_col').value; //получение количества заявок
+			var time_cost = document.getElementById('time_cost').value; //получение постоянных издержек
 			var request_arr = generate(num_col); //генерация массива заявок	
 			var exec_arr = exec_arr_create (exec_role_arr); //создаем массив возможных исполнителей			
 			var request_full_journal = [];
@@ -170,11 +172,13 @@
 				cost_finally = cost_finally + request_arr[c].cost;
 			}
 			var full_time = request_arr[num_col-1].time_finish;
+			var full_time_cost = time_cost * (full_time/60);
 			var downtime_cost_full = exec_journal_create(exec_arr, full_time);
-			cost_finally = cost_finally + downtime_cost_full;
+			cost_finally = cost_finally + (downtime_cost_full/60) + full_time_cost;
 			var result_req = cost_finally / num_col;
 			document.getElementById('cost_finally').value = cost_finally.toFixed(2);
 			document.getElementById('result_req').value = result_req.toFixed(2);
+			document.getElementById('full_time').value = (full_time/60).toFixed(2);
 			function compareStart(A, B) {
 				return A.старт - B.старт;
 				}
@@ -192,11 +196,10 @@
 			{	
 				var row = {
 				id_исполнителя: exec_arr[n].id,
-				время_работы: exec_arr[n].all_time,
-				время_простоя: full_time - exec_arr[n].all_time,
+				время_работы: (exec_arr[n].all_time/60).toFixed(2),
+				время_простоя: ((full_time - exec_arr[n].all_time)/60).toFixed(2),
 				};
-		                exec_journal[n] = row;
-				
+		        exec_journal[n] = row;				
 				var downtime_cost_full = downtime_cost_full + ((full_time - exec_arr[n].all_time) * Number(exec_arr[n].downtime_cost));
 			}
 			print_array(exec_journal, 'worker');
@@ -235,7 +238,6 @@
 		//функция обработки блока
 		var block_work = function block_work (request_arr, exec_arr, block_arr_info, request_full_journal, num_block, row_col) {
 			var time = 0;
-			var time_cost = document.getElementById('time_cost').value; //получение постоянных издержек
 			var time_exec = Number(block_arr_info.time_exec); //время обработки заявки в блоке
 			var name_role = block_arr_info.name_role; //получаем роль
 			for (var i = 0; i < request_arr.length; i++) //цикл вызова функции обработки блока
@@ -247,7 +249,7 @@
 					var time_result = array_save[1];
 					exec_arr = array_save[0];
 					var indx = array_save[2];
-					request_arr[i].cost = request_arr[i].cost + (Number(exec_arr[indx].cost_hour) * ((Number(time_exec)/60) + (Number(time_cost))));
+					request_arr[i].cost = request_arr[i].cost + (Number(exec_arr[indx].cost_hour) * (Number(time_exec)/60));
 					request_arr[i].time_last_upd = time_result;
 				}
 				if (request_arr[i].flag_start == 'Y')
@@ -260,7 +262,7 @@
 					request_arr[i].time_start = time_result - time_exec;
 					request_arr[i].time_last_upd = time_result;
 					request_arr[i].flag_start = 'N';
-					request_arr[i].cost = Number(exec_arr[indx].cost_hour) * ((Number(time_exec)/60) + (Number(time_cost)));
+					request_arr[i].cost = Number(exec_arr[indx].cost_hour) * (Number(time_exec)/60);
 				}
 				if (request_arr[i].flag_finish == 'Y')
 				{
@@ -271,7 +273,7 @@
 					var indx = array_save[2];
 					request_arr[i].time_last_upd = time_result;
 					request_arr[i].time_finish = time_result;
-					request_arr[i].cost = request_arr[i].cost + (Number(exec_arr[indx].cost_hour) * ((Number(time_exec)/60) + (Number(time_cost))));
+					request_arr[i].cost = request_arr[i].cost + (Number(exec_arr[indx].cost_hour) * (Number(time_exec)/60));
 				}
 				//создание окончательного массива заявок для вывода в виде журнала
 				var row = {
@@ -448,6 +450,7 @@
 			<fieldset id="fs2">
 				<legend>Результаты</legend>
 				<p>Полные издержки на обработку заявок: <output name="result" id="cost_finally">0</output></p>
+				<p>Полное время обработки: <output name="full_time" id="full_time">0</output></p>
 				<p>Средняя стоимость обработки заявки: <output name="result_req" id="result_req">0</output></p>
 				<div class="ptr" onclick="ch_disp('A2')" id="div-block">Результат обработки файла блоков ▼</div>
 					<div class="ptr" id="A2">
