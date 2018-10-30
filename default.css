@@ -64,31 +64,6 @@ a img {
 		width: 100%;
 	}
 	
-	.image-full
-	{
-		display: block;
-		width: 100%;
-		margin: 0 0 3em 0;
-	}
-	
-	.image-left
-	{
-		float: left;
-		margin: 0 2em 2em 0;
-	}
-	
-	.image-centered
-	{
-		display: block;
-		margin: 0 0 2em 0;
-	}
-	
-	.image-centered img
-	{
-		margin: 0 auto;
-		width: auto;
-	}
-
 
 hr {
 	display: none;
@@ -102,7 +77,6 @@ hr {
 }
 
 .container {
-	width: 1200px;
 	margin: 0px auto;
 }
 
@@ -122,6 +96,8 @@ hr {
 	position: relative;
 	overflow: hidden;
 	height: 600px;
+	width: 48%;
+	float: right;
 }
 
 #social
@@ -217,7 +193,8 @@ hr {
 
 #page {
 	overflow: hidden;
-	padding: 5em 0em;
+	/* padding: 5em 0em; */
+	width: 50%;
 }
 
 	#page img
@@ -270,32 +247,6 @@ hr {
 	margin-bottom: 4em;
 	padding-bottom: 4em;
 	border-bottom: 1px solid #E6E7DC;
-}
-
-/** SIDEBAR 1 */
-
-#sidebar1 {
-	float: right;
-	width: 250px;
-	margin-right: 50px;
-}
-
-#sidebar1 #box1 {
-	margin-bottom: 4em;
-}
-
-#sidebar1 h2,
-#sidebar2 h2
-{
-	font-size: 1.5em;
-	font-weight: 400;
-}
-
-/** SIDEBAR 2 */
-
-#sidebar2 {
-	float: right;
-	width: 250px;
 }
 
 /* Footer */
@@ -415,61 +366,15 @@ ul.style3 .first {
 }
 
 
-/*********************************************************************************/
-/* Portfolio                                                                     */
-/*********************************************************************************/
-
-	#portfolio-wrapper
-	{
-		overflow: hidden;
-		padding: 5em 0em;
-		background: rgba(0,0,0,.02);
-		background-image: url(images/overlay.png);
-		background-repeat: repeat;
-		border-top: 1px solid rgba(0,0,0,.05);
-	}
-	
-	#portfolio
-	{
-	}
-
-	#portfolio .box
-	{
-		color: rgba(0,0,0,0.5);
-	}
-	
-	#portfolio h3
-	{
-		display: block;
-		padding-bottom: 1em;
-		text-transform: uppercase;
-		font-size: 1.2em;
-		font-weight: 400;
-		color: rgba(0,0,0,0.7);
-	}
-
-	#portfolio .title
-	{
-	}
-
-	#portfolio .title h2
-	{
-		color: rgba(0,0,0,0.8);
-	}
-	
-	#portfolio .title .byline
-	{
-		display: block;
-		padding-bottom: 2em;
-		color: rgba(0,0,0,0.7);
-	}
-
 	.column1,
 	.column2,
 	.column3,
 	.column4
 	{
-		width: 282px;
+		width: 100%;
+		margin: 30px;
+		padding: 5px 5px;
+		margin-right: 10px;
 	}
 	
 	.column1,
@@ -530,45 +435,4 @@ ul.style3 .first {
 		font-size: 1em;
 		color: #FFF;
 	}
-	
-/*********************************************************************************/
-/* Social Icon Styles                                                            */
-/*********************************************************************************/
-
-	ul.contact
-	{
-		margin: 0;
-		padding: 2em 0em 0em 0em;
-		list-style: none;
-	}
-	
-	ul.contact li
-	{
-		display: inline-block;
-		padding: 0em 0.10em;
-		font-size: 1em;
-	}
-	
-	ul.contact li span
-	{
-		display: none;
-		margin: 0;
-		padding: 0;
-	}
-	
-	ul.contact li a
-	{
-	}
-	
-	ul.contact li a:before
-	{
-		display: inline-block;
-		background: none;
-		width: 40px;
-		height: 40px;
-		line-height: 40px;
-		text-align: center;
-		color: rgba(255,255,255,1);
-	}
-	
 
