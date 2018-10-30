@@ -1,17 +1,70 @@
+
 <!DOCTYPE html>
-<html>
-	<title></title>
-	<head>
-	<meta charset="utf-8">
-	</head>
-	<body>
-		<h3>Отчет по лабораторным работам</h3>
-		<h4>Лабораторная №1</h4>
-		<p>Создана персональная страница-отчет.</p>
-		<h4>Лабораторная №2</h4>
-		<a style="color:#0000FF"; href="diplom.html">Ссылка на моделирование с использованием css, html, js и json</a></br>
-		<h4>Лабораторная №3</h4>
-		<p>Выполнено лабораторное задание по настройке сетей в cisco.</p>
-		<img src="настройка сетей для лабы.jpg">
-	</body>
+<html ng-app="YepCom" class="foru-app">
+  <head>
+    <!--<script src="https://www.youtube.com/iframe_api"></script>-->
+    <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="jMCEIoxmurAoQjANHnY11bCzubovnIwlrfPFQpAOBRfcr5jdDDQjaVM4Cry6oPw7Hfv2D5dG0MZqazUNTQsRpA==" />
+    <!--<script src="http://feather.aviary.com/imaging/v2/editor.js"></script>-->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Comfortaa|Lobster|Open+Sans|Pacifico|Play|Poiret+One|Roboto|Roboto+Slab|Source+Sans+Pro|PT+Serif|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet"> -->
+    <!-- для старых -->
+    <link href="https://fonts.googleapis.com/css?family=Lobster|Play|Poiret+One" rel="stylesheet">
+    <!-- новые шрифты -->
+    <link href="https://fonts.googleapis.com/css?family=Alegreya+Sans:100,100i,300,300i,400,400i,500,500i,700,700i,800,800i,900,900i|Arimo:400,400i,700,700i|Comfortaa:300,400,700|EB+Garamond:400,400i,500,500i,600,600i,700,700i,800,800i|Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Fira+Sans:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Istok+Web:400,400i,700,700i|Lora:400,400i,700,700i|Merriweather:300,300i,400,400i,700,700i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Serif:400,400i,700,700i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Oswald:200,300,400,500,600,700|PT+Sans+Narrow:400,700|PT+Sans:400,400i,700,700i|PT+Serif:400,400i,700,700i|Pacifico|Philosopher:400,400i,700,700i|Playfair+Display:400,400i,700,700i,900,900i|Roboto+Slab:100,300,400,700|Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Ubuntu+Condensed|Vollkorn:400,400i,600,600i,700,700i,900,900i&amp;subset=cyrillic" rel="stylesheet">
+
+    <link rel="stylesheet" media="all" href="/assets/bootstrap.min-1c377ed8d3bda9e32406b2ac529612d55b8d1cbe834b36be890686fbf8ad4d9f.css" data-turbolinks-track="false" data-name="bootstrap" data-ownbootstrap="true" />
+    <link rel="stylesheet" media="all" href="/assets/application-7169cb7c454a6b9c9573cca2c4462ec46f70345d21493e6b86eb674549edb3b0.css" data-turbolinks-track="false" data-name="application" />
+    <title ng-bind="title"></title>
+
+    <meta name="prerender-status-code" content="{{prerenderstatuscode}}">
+
+    <meta name="prerender-header" content="Location: {{prerenderredirecturl}}" ng-if="prerenderstatuscode == 301 || prerenderstatuscode == 302">
+
+    <base href="/">
+    <meta charset="utf-8" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="content-language" content="ru"/>
+    <meta name="google-site-verification" content="HNkf-QvLKi9mVAjBqJYCHHvO6w-nnNM94AYu5hHA_is" ng-if="currentState != 'preview'"/>
+    <!--<script type="text/javascript">(window.Image ? (new Image()) : document.createElement('img')).src = 'https://vk.com/rtrg?p=VK-RTRG-160466-ay9ed';</script>-->
+    <meta name="yandex-verification" content="d4a12fd4e27332f0" ng-if="currentState != 'preview'" />
+    <meta name='wmail-verification' content='10c610d6de8b26df6a4669824a1d521e' ng-if="currentState != 'preview'"/>
+
+    <meta name="og:site_name" content="Fo.ru"/>
+    <meta name="og:url" content="{{ogurl}}"/>
+    <meta name="og:type" content="website"/>
+    <meta name="og:title" content="{{title}}"/>
+    <meta name="og:description" content="{{description}}"/>
+    <meta property="og:image:url" content="{{ogimageurl}}" />
+    <meta name="og:image:url" content="{{ogimageurl}}" />
+    <meta property="og:image" content="{{ogimageurl}}" />
+    <meta name="og:image" content="{{ogimageurl}}" />
+    <meta name="robots" content="index,follow" />
+    <!--<meta name="googlebot" content="noarchive" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="{{description}}" />
+    <meta name="keywords" content="{{keywords}}"/>
+    <meta name="google-site-verification" content="_WkSmARBxy9Tesnk_5SNNFLiiyHkRouoRmo2cp6NNLE" />
+
+    <meta name="google-site-verification" content="{{googleverification}}" ng-if="googleverification" google="true"/>
+    <meta name="yandex-verification" content="{{yandexverification}}" ng-if="yandexverification" yandex="true"/>
+    <meta name="capitaller" content="{{capitallerverification}}"/>
+
+
+    <!--<link rel="icon" href="/favicon.ico?88732888" type="image/x-icon">-->
+    <!--<link rel="shortcut icon" href="/favicon.ico?88732888" type="image/x-icon">-->
+    <!--<link rel="SHORTCUT ICON" href="/favicon.ico?88732888" type="image/x-icon">-->
+
+
+    <link rel="icon" ng-href="{{favicon_url}}" type="image/x-icon">
+    <link rel="shortcut icon" ng-href="{{favicon_url}}" type="image/x-icon">
+    <link rel="SHORTCUT ICON" ng-href="{{favicon_url}}" type="image/x-icon">
+
+    <div id="foruyendexmetrikacounter">
+	  </div>
+        <meta name="google-site-verification" content="VJECJrLjFkeIBH3lWhpKORLfU5PmNy4F0VYKF09L1Ok" />
+  </head>
+      <body ng-style="forubodybackground">
+        <div ui-view="" class="mytoggle" style="height:100%;"></div>
+      </body>
 </html>
