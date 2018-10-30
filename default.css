@@ -84,10 +84,10 @@ a img {
 	position: relative;
 	overflow: hidden;
 	height: 600px;
-	width: 50%;
+	width: 35%;
 	float: right;
 	background:url(girl.png) no-repeat center;
-	background-size: cover;
+	background-size: width:100%;
 }
 
 /** MENU */
@@ -101,7 +101,7 @@ a img {
 
 #page {
 	overflow: hidden;
-	width: 50%;
+	width: 65%;
 	float: left;
 }
 
@@ -151,11 +151,10 @@ a img {
 	.column3,
 	.column4
 	{
-		width: 100%;
+		width: 90%;
 		margin: 5px;
 		padding: 5px 5px;
-		margin-right: 10px;
-		vertical-align: middle;
+		margin-left: 40px;
 	}
 	
 /*********************************************************************************/
@@ -203,4 +202,3 @@ a img {
 		font-size: 1em;
 		color: #FFF;
 	}
-
